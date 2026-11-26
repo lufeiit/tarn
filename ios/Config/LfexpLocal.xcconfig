@@ -1,0 +1,18 @@
+// 本地真机调试通道（Debug / Profile 配置引用）。
+//
+// 用「稳定、长期」的开发者账号签名，和 TestFlight 通道完全分开：
+// 两套 Bundle ID + 两套 App Group，互不影响，也避免同一 App 跨团队迁移。
+//
+// LFEXP_TEAM_ID：Xcode → Settings → Accounts → 该团队 Team ID
+// LFEXP_APP_NAME：桌面图标与设置里显示的名字（本地用临时名，避免和正式包混）
+// LFEXP_BUNDLE_ID：主 App 的完整 Bundle ID；扩展与 App Group 自动派生：
+//   <ID>.PacketTunnel / <ID>.VpnWidget / group.<ID>
+
+LFEXP_TEAM_ID = C3W297B4DY
+LFEXP_APP_NAME = Tarn Dev
+LFEXP_BUNDLE_ID = tarn.localdev
+FLOWARC_URL_SCHEME = lfexp
+
+LFEXP_APP_GROUP = group.$(LFEXP_BUNDLE_ID)
+LFEXP_PROVIDER_BUNDLE_ID = $(LFEXP_BUNDLE_ID).PacketTunnel
+LFEXP_CORE_NOTIFY = $(LFEXP_BUNDLE_ID).coreMsg

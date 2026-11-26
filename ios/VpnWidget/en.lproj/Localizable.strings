@@ -1,0 +1,8 @@
+/* Control Center VPN quick-toggle widget — localization table (VpnWidget target).
+   Keys are stable vpn.widget.* identifiers; see VpnWidget.swift. */
+"vpn.widget.toggle.title" = "FlowArc VPN";
+"vpn.widget.toggle.description" = "Connect or disconnect FlowArc VPN with one tap";
+"vpn.widget.displayName" = "FlowArc VPN";
+"vpn.widget.dialog.noConfig" = "No VPN configuration found. Open the app once first.";
+"vpn.widget.dialog.disconnected" = "VPN disconnected";
+"vpn.widget.dialog.connecting" = "Connecting to VPN…";

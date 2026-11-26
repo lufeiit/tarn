@@ -1,0 +1,18 @@
+name: vpn_bridge
+description: FlClash iOS VPN 桥（NEVPNManager 控制 + App Group 消息通道）
+version: 1.0.0
+publish_to: none
+
+environment:
+  sdk: ">=3.12.0 <4.0.0"
+  flutter: ">=3.35.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+flutter:
+  plugin:
+    platforms:
+      ios:
+        pluginClass: VpnBridgePlugin

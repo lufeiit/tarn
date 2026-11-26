@@ -1,0 +1,19 @@
+mode: rule
+
+proxies:
+  - name: Review VPN
+    type: trojan
+    server: review-vpn.example.com
+    port: 443
+    password: "REPLACE_WITH_DEDICATED_REVIEW_PASSWORD"
+    sni: review-vpn.example.com
+    skip-cert-verify: false
+
+proxy-groups:
+  - name: Review Route
+    type: select
+    proxies:
+      - Review VPN
+
+rules:
+  - MATCH,Review Route

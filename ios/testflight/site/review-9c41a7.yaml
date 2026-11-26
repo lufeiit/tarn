@@ -1,0 +1,19 @@
+mode: rule
+
+proxies:
+  - name: Review VPN
+    type: ss
+    server: 64.204.48.189
+    port: 53291
+    cipher: aes-256-gcm
+    password: "ZkVQT21HTHRGbGVMMTV1U2ZzMmlHVjBxT0tiTno5ODg="
+    udp: true
+
+proxy-groups:
+  - name: Review Route
+    type: select
+    proxies:
+      - Review VPN
+
+rules:
+  - MATCH,Review Route

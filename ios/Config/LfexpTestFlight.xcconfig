@@ -1,0 +1,13 @@
+// TestFlight / App Store 通道（Release 配置引用）。
+//
+// 用可替换的开发者账号签名；这条通道只负责分发，不需要注册测试设备。
+// 换账号时只改这两行。
+
+LFEXP_TEAM_ID = PZDSDKT54X
+LFEXP_APP_NAME = Tarn
+LFEXP_BUNDLE_ID = com.tarn.app
+FLOWARC_URL_SCHEME = tarn
+
+LFEXP_APP_GROUP = group.$(LFEXP_BUNDLE_ID)
+LFEXP_PROVIDER_BUNDLE_ID = $(LFEXP_BUNDLE_ID).PacketTunnel
+LFEXP_CORE_NOTIFY = $(LFEXP_BUNDLE_ID).coreMsg

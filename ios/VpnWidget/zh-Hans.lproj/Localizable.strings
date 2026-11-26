@@ -1,0 +1,8 @@
+/* 控制中心 VPN 快捷开关 —— 本地化文案表（VpnWidget target）。
+   值逐字沿用原硬编码中文，勿改字。key 见 VpnWidget.swift。 */
+"vpn.widget.toggle.title" = "FlowArc VPN";
+"vpn.widget.toggle.description" = "一键连接或断开 FlowArc VPN";
+"vpn.widget.displayName" = "FlowArc VPN";
+"vpn.widget.dialog.noConfig" = "未找到 VPN 配置，请先在 App 内启动一次";
+"vpn.widget.dialog.disconnected" = "VPN 已断开";
+"vpn.widget.dialog.connecting" = "VPN 连接中…";
