@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 
-/// The fonts FlClash bundles, declared in its `pubspec.yaml`.
+/// The fonts Tarn bundles, declared in its `pubspec.yaml`.
 enum FontFamily {
   twEmoji('Twemoji'),
   jetBrainsMono('JetBrainsMono');

@@ -55,7 +55,7 @@ final class SubscriptionLinkBridge {
     for context in contexts {
       let url = context.url
       guard let scheme = url.scheme?.lowercased(),
-            ["flowarc", "lfexp"].contains(scheme),
+            ["tarn", "lfexp"].contains(scheme),
             url.host?.lowercased() == "install-config" else { continue }
       let link = url.absoluteString
       if listening, let channel = channel {

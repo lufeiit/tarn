@@ -204,7 +204,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         // 诊断通道 ②（Swift/Go）：把内核 stdout/stderr（mihomo 日志，含 DNS/DoT
         // 解析细节、gvisor 栈报错）重定向到 App Group 容器 extDiag.txt，
         // 主 App 走 VpnBridge.readExtLog 读，devicectl 也能直接拉取。
-        // 同时注入 LFEXP_DIAG_DIR，让 Go 侧（lfexp 解析/握手、iosDiagMem）落盘到同一目录。
+        // 同时注入 TARN_DIAG_DIR，让 Go 侧（Tarn 解析/握手、iosDiagMem）落盘到同一目录。
         if extDiagOn, let logContainer = FileManager.default.containerURL(
             forSecurityApplicationGroupIdentifier: groupId) {
             // 清理旧位置（App Group 根）遗留的诊断文件，避免新旧混读
@@ -219,7 +219,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
                 // 摘回 /dev/null；不记就会一路写到隧道结束（2026-10-28 真机就是这样多写了 51 分钟）。
                 extDiagStdioAttached = true
                 if let dir = diagDirURL() {
-                    setenv("LFEXP_DIAG_DIR", dir.path, 1)
+                    setenv("TARN_DIAG_DIR", dir.path, 1)
                 }
             } else {
                 reportDiagError("startTunnel: diagFileURL 为 nil，extDiag 无法落盘")
@@ -395,7 +395,7 @@ class PacketTunnelProvider: NEPacketTunnelProvider {
         extLog("calling startTUN fd=\(kernelFD)")
         // gVisor TCP 窗口必须走 Go 侧**显式 setter**：darwin 上 Go runtime 启动时会
         // 快照 environ，Swift 的 libc setenv 它读不到 ⇒ 旧代码的
-        // setenv("LFEXP_TUN_TCP_BUF_KB") 从来没有生效过，内核一直用 512KB 默认值
+        // setenv("TARN_TUN_TCP_BUF_KB") 从来没有生效过，内核一直用 512KB 默认值
         // （每连接预占 512KB，几十条并发 ⇒ pf 撞 50MB 被杀）。
         ClashCore.setTunBufKB(Self.tunBufRecvStartKB, Self.tunBufRecvMaxKB,
                               Self.tunBufSendStartKB, Self.tunBufSendMaxKB)
@@ -916,7 +916,7 @@ private func infoString(_ key: String, fallback: String) -> String {
     (Bundle.main.object(forInfoDictionaryKey: key) as? String) ?? fallback
 }
 
-private let groupId = infoString("LFExpAppGroup", fallback: "group.com.tarn.app")
+private let groupId = infoString("TarnAppGroup", fallback: "group.com.tarn.app")
 private var msgPollTimer: DispatchSourceTimer?
 
 // MARK: - 诊断落盘位置（App Group 的 Library/ 子目录）
@@ -926,7 +926,7 @@ private var msgPollTimer: DispatchSourceTimer?
 /// **为什么不用容器根**：`xcrun devicectl` 对 App Group 域**既不列出也拷不走根级文件**
 /// —— `device info files` 只枚举 `Library/` 子树，`device copy from --source extDiag.txt`
 /// 直接报 7000。落到 `Library/` 下才能被直接拉取（实测 `Library/probe-ext.txt` 可以拷到）。
-/// Go 侧同理由 `LFEXP_DIAG_DIR` 指到这里（见 `constant`/`common.go: iosDiagDir`）。
+/// Go 侧同理由 `TARN_DIAG_DIR` 指到这里（见 `constant`/`common.go: iosDiagDir`）。
 private func diagDirURL() -> URL? {
     guard let container = FileManager.default
         .containerURL(forSecurityApplicationGroupIdentifier: groupId) else {
@@ -1199,10 +1199,10 @@ private func rotateExtDiagIfNeeded() {
 // 背景：实测 App Group 根目录只写进了 `Library/`（UD plist 正常），`extDiag.txt`
 // 从未落地，而失败原因被 `catch` 吞掉，导致长期无法定位。
 /// 诊断通道总开关（**运行时标记文件**，默认关）：
-/// - 诊断版（App 带 `--dart-define=IOS_DIAG=true`）启动时创建 `Library/lfexp-diag-on.txt`；
+/// - 诊断版（App 带 `--dart-define=IOS_DIAG=true`）启动时创建 `Library/tarn-diag-on.txt`；
 /// - 正式版启动时会**删除**该标记 ⇒ stdout/stderr 不再重定向、`extLog` 不再落盘。
 /// 为何不用编译宏：Swift 自定义宏要改 Xcode 工程/xcconfig，而本项目已有“文件热开关”
-/// 的成熟模式（`lfexp-diag-level.txt` 等），这里与内核侧 `ios_diag` 分层配套使用。
+/// 的成熟模式（`tarn-diag-level.txt` 等），这里与内核侧 `ios_diag` 分层配套使用。
 // 诊断开关（App / 内核 / 扩展共用的那个 App Group 文件）：文件在**且租约没到期**才算开。
 //
 // 为什么带租约（业主 2026-10-28：「我下发了开关后，用户没收到关闭的通知，有没有自动关闭的动作」）：
@@ -1246,7 +1246,7 @@ private func detachExtDiagStdio() {
 /// 与 extDiagStamp 同一套写法）。内容读不懂（老包写的 "1"、写到一半被截断）时按文件修改时间
 /// + 7 天：老包每次启动都会重写这个文件，mtime 就是"上次确认开着"的时刻，与老语义一致。
 private func extDiagOnFileLive() -> Bool {
-    guard let url = diagFileURL("lfexp-diag-on.txt") else { return false }
+    guard let url = diagFileURL("tarn-diag-on.txt") else { return false }
     guard let attrs = try? FileManager.default.attributesOfItem(atPath: url.path),
           let mtime = attrs[.modificationDate] as? Date else { return false }
     let body = (try? String(contentsOf: url, encoding: .utf8)) ?? ""
@@ -1397,7 +1397,7 @@ private func probeGroupContainer(_ container: URL) {
 // 而不是新加一行，两处使用（注册观察者 / 发通知）就悬空了 —— CI 编译报
 // "cannot find 'notifyName' in scope"（run 799，两个品牌同时红）。名字别改：它是跨进程约定，
 // 改了老 App 发的通知新扩展收不到。
-private let notifyName = infoString("LFExpCoreNotify", fallback: "com.tarn.app.coreMsg")
+private let notifyName = infoString("TarnCoreNotify", fallback: "com.tarn.app.coreMsg")
 private let ciStopNotifyName = "cn.lufei.ci.stop.vpn"
 private var ciStopObserverInstalled = false
 private weak var ciProviderRef: PacketTunnelProvider?

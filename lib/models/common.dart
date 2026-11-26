@@ -826,7 +826,7 @@ abstract class MitmModule with _$MitmModule {
     @Default({}) Map<String, String> resources,
     String? system,
 
-    /// Its scripts FlClash runs, which turning it on asks about first.
+    /// Its scripts Tarn runs, which turning it on asks about first.
     @Default(0) int scripts,
 
     /// Network changes, skipped verification or limited clients, which

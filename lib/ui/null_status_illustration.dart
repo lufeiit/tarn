@@ -2,7 +2,7 @@ import 'package:tarn/ui/icons/app_glyphs.dart';
 import 'package:prism_ui/icons/glyph.dart';
 import 'package:prism_ui/null_status.dart';
 
-/// The illustrations of FlClash's empty pages.
+/// The illustrations of Tarn's empty pages.
 enum NullStatusIllustration implements Illustration {
   data,
   logs,

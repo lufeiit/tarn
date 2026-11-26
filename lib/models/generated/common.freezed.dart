@@ -5385,7 +5385,7 @@ as int?,
 /// @nodoc
 mixin _$MitmModule {
 
- int get id; String get name; String get description; String? get url; bool get enabled; int? get order; Map<String, String> get arguments; Map<String, String> get resources; String? get system;/// Its scripts FlClash runs, which turning it on asks about first.
+ int get id; String get name; String get description; String? get url; bool get enabled; int? get order; Map<String, String> get arguments; Map<String, String> get resources; String? get system;/// Its scripts Tarn runs, which turning it on asks about first.
  int get scripts;/// Network changes, skipped verification or limited clients, which
 /// turning it on also asks about.
  bool get asksConsent;/// The user's answer to what turning it on asks about: once agreed, its
@@ -5625,7 +5625,7 @@ class _MitmModule implements MitmModule {
 }
 
 @override final  String? system;
-/// Its scripts FlClash runs, which turning it on asks about first.
+/// Its scripts Tarn runs, which turning it on asks about first.
 @override@JsonKey() final  int scripts;
 /// Network changes, skipped verification or limited clients, which
 /// turning it on also asks about.

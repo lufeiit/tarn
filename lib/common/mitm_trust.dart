@@ -14,7 +14,7 @@ import 'package:flutter/services.dart' show PlatformException;
 import 'package:path/path.dart';
 
 /// The name of the leaf the Core signs for a trust store to verify.
-const mitmCheckHost = 'mitm-check.flclash.invalid';
+const mitmCheckHost = 'mitm-check.tarn.invalid';
 
 const mitmCertificateFileName = 'Tarn CA.crt';
 
@@ -387,7 +387,7 @@ class LinuxMitmTrustStore implements MitmTrustStore {
   /// Debian layout is tried last.
   static const installScript = r'''
 set -e
-name=flclash-mitm-ca.crt
+name=tarn-mitm-ca.crt
 if [ -d /etc/pki/ca-trust/source/anchors ] && command -v update-ca-trust >/dev/null; then
   install -m 0644 "$1" "/etc/pki/ca-trust/source/anchors/$name"
   update-ca-trust extract
@@ -409,7 +409,7 @@ fi
   /// Undoes [installScript], choosing the trust tool the same way.
   static const removeScript = r'''
 set -e
-name=flclash-mitm-ca.crt
+name=tarn-mitm-ca.crt
 if [ -d /etc/pki/ca-trust/source/anchors ] && command -v update-ca-trust >/dev/null; then
   rm -f "/etc/pki/ca-trust/source/anchors/$name"
   update-ca-trust extract
@@ -599,7 +599,7 @@ fi
   @override
   Future<MitmInstallOutcome> install(MitmCertificate ca) async {
     await _withTempFile(writeTemp, ca.pem, (path) async {
-      if (!await elevate(['/bin/sh', '-c', installScript, 'flclash', path])) {
+      if (!await elevate(['/bin/sh', '-c', installScript, 'tarn', path])) {
         throw MessageException(currentAppLocalizations.mitmSystemStoreFailed);
       }
       final certutil = _findExecutable('certutil');
@@ -636,7 +636,7 @@ fi
   Future<MitmRemoveOutcome> remove(MitmCertificate ca) async {
     var removed = await _removeFromDatabases(ca);
     if (await inSystemBundle(ca) &&
-        !await elevate(['/bin/sh', '-c', removeScript, 'flclash'])) {
+        !await elevate(['/bin/sh', '-c', removeScript, 'tarn'])) {
       removed = false;
     }
     return removed ? MitmRemoveOutcome.removed : MitmRemoveOutcome.failed;

@@ -6,7 +6,7 @@ import 'site_configs.g.dart';
 /// 桌面补 `host:port` 后缀脱敏，iOS 补 `token:` 冒号形式与 `port=` 标签在 maskIp 内的
 /// 覆盖；IPv6 两端原本都有）。
 ///
-/// 背景：订阅中的私有域名（中转域名、私有 DoH 地址、LFExp 节点域名）
+/// 背景：订阅中的私有域名（中转域名、私有 DoH 地址、Tarn 节点域名）
 /// 不应以明文出现在可观测位置：
 /// - 日志面板 / 导出日志（`Logs.add` 统一脱敏）
 /// - `fake-ip-filter` / `hosts`（生成配置时自动清理）
@@ -108,7 +108,7 @@ class SensitiveDomains {
 
   static bool get isEmpty => _domains.isEmpty && _servers.isEmpty;
 
-  static bool isLfexpOnlyConfig(Map<String, dynamic> config) {
+  static bool isProprietaryOnlyConfig(Map<String, dynamic> config) {
     final proxies = config['proxies'];
     final providers = config['proxy-providers'];
     return proxies is List &&
@@ -674,7 +674,7 @@ class SensitiveDomains {
 
   /// 显式端口字段：`port=28001` / `port: 28001` → `port=***`。
   ///
-  /// 内核 `dial ok node=... port=%d`（lfexp client）属这种形态，不是 host:port，
+  /// 内核 `dial ok node=... port=%d`（Tarn client）属这种形态，不是 host:port，
   /// 2026-09-14 真机日志里 `port=28001` 出现 3985 次。注意不用内联修饰符
   /// （`(?i)`），Dart VM 运行时会抛 FormatException —— 用 caseSensitive 控制。
   static final RegExp _portLabelReg = RegExp(
@@ -948,7 +948,7 @@ class SensitiveDomains {
   /// 暂无对应设置页入口，保留同名开关与默认值以保证掩码口径两端一致。）
   static bool maskEnabled = true;
 
-  /// 仅 LFExp 协议配置参与打码：切到 anytls 等其他协议时整体关闭，
+  /// 仅 Tarn 协议配置参与打码：切到 anytls 等其他协议时整体关闭，
   /// 避免把普通订阅的节点/域名也掩掉。
   static bool maskScopeEnabled = false;
 
@@ -975,7 +975,7 @@ class SensitiveDomains {
     r'(\d{1,3}\.\d{1,3}\.\*{3}\.\*{3}|\[v6:\*{3}\]|v6:\*{3}|\*{3}(?:\.[A-Za-z0-9*-]+)*):\d{1,5}(?!\d)',
   );
 
-  /// 协议字样（lfexp / 品牌 slug）：业主口径是日志里不要出现自研协议名，
+  /// 协议字样（Tarn / 品牌 slug）：业主口径是日志里不要出现自研协议名，
   /// 避免被检索后针对性识别。统一替换成 `***`（`[LFEXP] padding` → `[***] padding`）。
   ///
   /// 品牌 slug 取自生成常量（只含本站点）：写死多个品牌 slug 会把

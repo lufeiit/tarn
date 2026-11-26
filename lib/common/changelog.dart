@@ -6,7 +6,7 @@ import 'package:tarn/models/changelog.dart';
 
 import 'common.dart';
 
-const releaseChangelogJsonMarker = '<!-- flclash:changelog:json';
+const releaseChangelogJsonMarker = '<!-- tarn:changelog:json';
 
 const _releaseChangelogJsonEndMarker = '-->';
 

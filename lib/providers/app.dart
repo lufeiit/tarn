@@ -19,7 +19,7 @@ bool safeMode(Ref ref) => safeModeBuild;
 @Riverpod(keepAlive: true)
 App? packageIconSource(Ref ref) => app;
 
-/// Android: su is there and granted FlClash's last request.
+/// Android: su is there and granted Tarn's last request.
 @Riverpod(keepAlive: true)
 Future<bool> rootAccess(Ref ref) async {
   if (!system.isAndroid || app == null) {

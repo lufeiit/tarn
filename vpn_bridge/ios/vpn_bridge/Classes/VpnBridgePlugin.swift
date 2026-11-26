@@ -4,18 +4,18 @@ import UIKit
 import Darwin
 import WidgetKit
 
-/// FlClash iOS VPN 桥插件：
+/// Tarn iOS VPN 桥插件：
 /// - NETunnelProviderManager 控制 PacketTunnel 扩展（启动/停止/状态）
 /// - App Group 消息队列（Message/Result JSON）用于 Dart ⇄ 扩展通信
 public class VpnBridgePlugin: NSObject, FlutterPlugin {
     /// 签名相关标识全部来自宿主 Info.plist（由 xcconfig 注入），
     /// 换团队/换 Bundle ID 时只改 ios/Config/*.xcconfig，不动代码。
     public static let groupId = infoString(
-        "LFExpAppGroup", fallback: "group.com.tarn.app")
+        "TarnAppGroup", fallback: "group.com.tarn.app")
     public static let providerBundleId = infoString(
-        "LFExpProviderBundleId", fallback: "com.tarn.app.PacketTunnel")
+        "TarnProviderBundleId", fallback: "com.tarn.app.PacketTunnel")
     public static let notifyName = infoString(
-        "LFExpCoreNotify", fallback: "com.tarn.app.coreMsg")
+        "TarnCoreNotify", fallback: "com.tarn.app.coreMsg")
 
     static func infoString(_ key: String, fallback: String) -> String {
         (Bundle.main.object(forInfoDictionaryKey: key) as? String) ?? fallback
@@ -244,7 +244,7 @@ public class VpnBridgePlugin: NSObject, FlutterPlugin {
         // 显示名跟当前包走（本地包与 TF 包名字不同），不再写死旧品牌。
         manager.localizedDescription =
             (Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String)
-            ?? "FlClash"
+            ?? "Tarn"
         manager.isEnabled = true
         manager.saveToPreferences { error in
             if let error = error {

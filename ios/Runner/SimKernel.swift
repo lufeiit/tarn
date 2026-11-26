@@ -3,7 +3,7 @@ import Foundation
 
 // MARK: - 模拟器专用内核桥
 //
-// iOS 模拟器不支持 Network Extension，而 FlClash 的订阅解析、节点列表、
+// iOS 模拟器不支持 Network Extension，而 Tarn 的订阅解析、节点列表、
 // 测速全部在 PacketTunnel 扩展里的 Go 内核执行。没有扩展，App 侧发到
 // App Group 的消息永远没人处理，`config.validate` / `profile.base` 只能超时。
 //
@@ -38,9 +38,9 @@ final class SimKernel {
     static let shared = SimKernel()
 
     private static let groupId = infoString(
-        "LFExpAppGroup", fallback: "group.com.tarn.app")
+        "TarnAppGroup", fallback: "group.com.tarn.app")
     private static let notifyName = infoString(
-        "LFExpCoreNotify", fallback: "com.tarn.app.coreMsg")
+        "TarnCoreNotify", fallback: "com.tarn.app.coreMsg")
 
     private static func infoString(_ key: String, fallback: String) -> String {
         (Bundle.main.object(forInfoDictionaryKey: key) as? String) ?? fallback
@@ -75,7 +75,7 @@ final class SimKernel {
         }
         started = true
 
-        // home 必须落在 App 自己的沙盒里：FlClash 的 profiles/ 在
+        // home 必须落在 App 自己的沙盒里：Tarn 的 profiles/ 在
         // Application Support 下，内核只放行 home 子树内的路径
         // （否则报 “path is not subpath of home directory”）。
         let home = FileManager.default.urls(

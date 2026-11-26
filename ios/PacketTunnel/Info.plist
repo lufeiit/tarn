@@ -2,16 +2,16 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LFExpAppGroup</key>
-	<string>$(LFEXP_APP_GROUP)</string>
-	<key>LFExpProviderBundleId</key>
-	<string>$(LFEXP_PROVIDER_BUNDLE_ID)</string>
-	<key>LFExpCoreNotify</key>
-	<string>$(LFEXP_CORE_NOTIFY)</string>
+	<key>TarnAppGroup</key>
+	<string>$(TARN_APP_GROUP)</string>
+	<key>TarnProviderBundleId</key>
+	<string>$(TARN_PROVIDER_BUNDLE_ID)</string>
+	<key>TarnCoreNotify</key>
+	<string>$(TARN_CORE_NOTIFY)</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>$(LFEXP_APP_NAME)</string>
+	<string>$(TARN_APP_NAME)</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

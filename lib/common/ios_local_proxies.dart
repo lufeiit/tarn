@@ -19,7 +19,7 @@ class IosLocalProxies {
 
   /// 由应用入口（main.dart）注册，返回当前**出站模式**（simple / global / split）。
   ///
-  /// 为什么必须注册：LFExp 订阅**一次性下发两套完整配置**
+  /// 为什么必须注册：Tarn 订阅**一次性下发两套完整配置**
   /// （`lfexp-simple-proxy-groups` 与 `lfexp-split-proxy-groups`），离线兜底必须按当
   /// 前模式选套，与在线路径保持一致。未注册时按规则模式处理。
   static Mode Function()? outboundModeGetter;
@@ -149,7 +149,7 @@ class IosLocalProxies {
 
   /// 交给内核的配置正文（`SetupBase.content`）：按出站模式选好组/规则再编码。
   ///
-  /// LFExp 订阅一次下发两套（simple / split），面板的 `proxy-groups` 固定是 simple。
+  /// Tarn 订阅一次下发两套（simple / split），面板的 `proxy-groups` 固定是 simple。
   /// 内核只认 `proxy-groups` / `rules`，不认 `lfexp-*` 扩展键 ⇒ 不在这里换套，
   /// 分流模式会拿到默认的简单组和简单规则。
   static String? prepareKernelContent(
@@ -207,7 +207,7 @@ class IosLocalProxies {
   ///
   /// iOS 的 TUN 带 `dns-hijack: any:53`，内核自己发往 UDP 53 的查询会被自己劫持，
   /// 节点域名解析不出来（历史故障：AnyTLS 全部 dns resolve failed）。
-  /// 面板的 LFExp 订阅自带私有 DoH（50101/33037），**有就必须保留**——
+  /// 面板的 Tarn 订阅自带私有 DoH（50101/33037），**有就必须保留**——
   /// `npc-a.cloud` 这类入口域名只有面板的 DNS 能解，公网 DoH 查不到。
   static void ensureProxyServerNameserver(Map<String, dynamic> config) {
     final dns = config['dns'];

@@ -459,7 +459,7 @@ class SetupAction extends _$SetupAction {
           .read(proxiesActionProvider.notifier)
           .updateCurrentGroupName(GroupName.GLOBAL.name);
     }
-    // LFExp 订阅的组/规则是两套（simple / split），内核只认 proxy-groups / rules，
+    // Tarn 订阅的组/规则是两套（simple / split），内核只认 proxy-groups / rules，
     // 切模式必须重新选套下发；否则切到分流看到的还是简单组。
     if (previous != mode) {
       applyProfileDebounce(silence: true);
@@ -654,7 +654,7 @@ class SetupAction extends _$SetupAction {
     if (system.isIOS) {
       IosLocalProxies.setLfexpDevice(rawConfig, localDeviceId, localDeviceName);
       // iOS 的 TUN 劫持 any:53：订阅没给 proxy-server-nameserver 时补 DoH over IP；
-      // 面板 LFExp 订阅自带的私有 DoH 必须原样保留（npc-*.cloud 只有它能解）。
+      // 面板 Tarn 订阅自带的私有 DoH 必须原样保留（npc-*.cloud 只有它能解）。
       IosLocalProxies.ensureProxyServerNameserver(rawConfig);
     }
     final directory = await appPath.profilesPath;
@@ -785,11 +785,11 @@ class SetupAction extends _$SetupAction {
     try {
       final profile = ref.read(profilesProvider).getProfile(profileId);
       // 面板/订阅地址整体进打码池：日志里出现的面板 host 与路径一并掩掉。
-      // 非 LFExp 订阅不打码，因此先读配置判定后再登记。
+      // 非 Tarn 订阅不打码，因此先读配置判定后再登记。
       final plain = await profile?.readPlaintext();
       if (plain == null || plain.isEmpty) return;
       final map = IosLocalProxies.configMapFromYamlString(plain);
-      if (map == null || !SensitiveDomains.isLfexpOnlyConfig(map)) return;
+      if (map == null || !SensitiveDomains.isProprietaryOnlyConfig(map)) return;
       final uri = Uri.tryParse(profile?.url ?? '');
       SensitiveDomains.updateApiBases([
         if (uri != null &&
@@ -856,7 +856,7 @@ class SetupAction extends _$SetupAction {
       // iOS 的 TUN 带 `dns-hijack: any:53`：内核自己发往 UDP 53 的查询会被
       // 自己劫持成循环，节点域名就解析不出来。节点域名单独走 DoH over IP
       // （443，不落在 53 上）；DNS 总开关与 fake-ip 仍由订阅/面板配置决定。
-      // proxy-server-nameserver 不在这里强写：订阅自带的私有 DoH（LFExp 用）
+      // proxy-server-nameserver 不在这里强写：订阅自带的私有 DoH（Tarn 用）
       // 会被覆盖掉。缺省值由 getProfile 的 ensureProxyServerNameserver 按订阅补。
       return effective.copyWith(
         dns: effective.dns.copyWith(

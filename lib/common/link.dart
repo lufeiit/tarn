@@ -58,9 +58,7 @@ String? _installConfigUrl(Uri uri) {
 })?
 installConfigTarget(Uri uri) {
   if (uri.host != 'install-config' ||
-      !(protocolSchemes.contains(uri.scheme) ||
-          uri.scheme == 'karing' ||
-          uri.scheme == 'flowarc')) {
+      !(protocolSchemes.contains(uri.scheme) || uri.scheme == 'karing')) {
     return null;
   }
   final url = uri.queryParameters['url']?.trim() ?? '';

@@ -287,7 +287,7 @@ extension ProfileExtension on Profile {
 
 
 
-  /// 订阅里出现 lfexp 节点就按自家协议处理（加密落盘）。
+  /// 订阅里出现 Tarn 节点就按自家协议处理（加密落盘）。
   static bool _carriesLfexpProxy(List<int> bytes) {
     try {
       final raw = loadYaml(utf8.decode(bytes, allowMalformed: true));
@@ -318,7 +318,7 @@ extension ProfileExtension on Profile {
     final mFile = await file;
     await tempFile.copy(mFile.path);
     await tempFile.safeDelete();
-    // 只有带 lfexp 节点的订阅才加密落盘：那是自家协议，磁盘不留明文。
+    // 只有带 Tarn 节点的订阅才加密落盘：那是自家协议，磁盘不留明文。
     // 其它协议的订阅保持原版行为，明文落盘。
     if (_carriesLfexpProxy(bytes)) {
       await ProfileContentCipher.encryptInPlace(mFile, id);

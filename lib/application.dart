@@ -99,14 +99,14 @@ class ApplicationState extends ConsumerState<Application>
   Future<void> _resetUnfoldDefault() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      if (prefs.getBool('lfexp_unfold_reset_v1') ?? false) return;
+      if (prefs.getBool('tarn_unfold_reset_v1') ?? false) return;
       final profiles = ref.read(profilesProvider);
       final notifier = ref.read(profilesProvider.notifier);
       for (final profile in profiles) {
         if (profile.unfoldSet.isEmpty) continue;
         notifier.put(profile.copyWith(unfoldSet: const {}));
       }
-      await prefs.setBool('lfexp_unfold_reset_v1', true);
+      await prefs.setBool('tarn_unfold_reset_v1', true);
     } catch (_) {}
   }
 
@@ -116,7 +116,7 @@ class ApplicationState extends ConsumerState<Application>
   Future<void> _applySettingsDefaults() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      if (prefs.getBool('lfexp_settings_defaults_v1') ?? false) return;
+      if (prefs.getBool('tarn_settings_defaults_v1') ?? false) return;
       ref
           .read(patchClashConfigProvider.notifier)
           .update(
@@ -142,11 +142,11 @@ class ApplicationState extends ConsumerState<Application>
           .update(
             (state) => state.copyWith(onlyStatisticsProxy: true),
           );
-      await prefs.setBool('lfexp_settings_defaults_v1', true);
+      await prefs.setBool('tarn_settings_defaults_v1', true);
     } catch (_) {}
   }
 
-  /// 启动自愈：带 lfexp 节点的订阅在磁盘上必须是密文。
+  /// 启动自愈：带 Tarn 节点的订阅在磁盘上必须是密文。
   ///
   /// 覆盖三种来源：旧版本升级上来的明文、备份恢复、以及只写了文件还没来得及
   /// 加密的情况。文件还没下载过就顺手拉一次，否则内核拿不到内容。

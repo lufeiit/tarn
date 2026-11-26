@@ -90,17 +90,17 @@ final class PackageIconSourceProvider
 
 String _$packageIconSourceHash() => r'b9b233f207f9dce3809537c3458e7a70192dd52d';
 
-/// Android: su is there and granted FlClash's last request.
+/// Android: su is there and granted Tarn's last request.
 
 @ProviderFor(rootAccess)
 final rootAccessProvider = RootAccessProvider._();
 
-/// Android: su is there and granted FlClash's last request.
+/// Android: su is there and granted Tarn's last request.
 
 final class RootAccessProvider
     extends $FunctionalProvider<AsyncValue<bool>, bool, FutureOr<bool>>
     with $FutureModifier<bool>, $FutureProvider<bool> {
-  /// Android: su is there and granted FlClash's last request.
+  /// Android: su is there and granted Tarn's last request.
   RootAccessProvider._()
     : super(
         from: null,

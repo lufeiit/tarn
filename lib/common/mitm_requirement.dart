@@ -1,8 +1,8 @@
 import 'dart:io';
 
-/// The values Surge's requirement expressions read, as FlClash stands in for
+/// The values Surge's requirement expressions read, as Tarn stands in for
 /// them: only macOS names a system Surge runs on, and the core is taken as the
-/// newest, since FlClash reads every feature a version check guards.
+/// newest, since Tarn reads every feature a version check guards.
 class MitmRequirementEnvironment {
   const MitmRequirementEnvironment({this.system = '', this.language = ''});
 

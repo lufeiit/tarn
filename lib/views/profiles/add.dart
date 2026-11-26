@@ -88,13 +88,14 @@ class AddProfileMenu extends ConsumerWidget {
       context,
       title: '从配置码导入',
       urlLabel: '配置码',
-      batchTip: '粘贴服务商发来的配置码，或 lfexp:// 开头的导入链接',
+      batchTip: '粘贴服务商发来的配置码，或导入链接',
       urlValidator: (value) {
         final text = value?.trim() ?? '';
         if (text.isEmpty) {
           return appLocalizations.emptyTip(appLocalizations.link);
         }
         if (text.startsWith('LF.') ||
+            text.startsWith('tarn://') ||
             text.startsWith('lfexp://') ||
             text.isUrl) {
           return null;

@@ -145,7 +145,7 @@ class DiagPolicy {
   /// 测试缝：换掉 App Group 容器路径的来源（生产不动，跟 `DiagPending.dirProvider` 同一套）。
   static Future<String?> Function()? dirProvider;
 
-  /// 把当前状态落到 `Library/lfexp-diag-on.txt`：开着就写（内容是租约到期时间）、关着就删。
+  /// 把当前状态落到 `Library/tarn-diag-on.txt`：开着就写（内容是租约到期时间）、关着就删。
   ///
   /// 内核与扩展只看这个文件（正式版那条运行期线，业主选的 B），所以**状态一变就得写**。
   /// 以前只有 App 启动时写一次，于是"面板开了、用户只是更新订阅"要等下次重启 App 才开始采：
@@ -160,7 +160,7 @@ class DiagPolicy {
         const Duration(seconds: 3),
       );
       if (p == null || p.isEmpty) return;
-      final File m = File('$p/Library/lfexp-diag-on.txt');
+      final File m = File('$p/Library/tarn-diag-on.txt');
       if (active) {
         m.parent.createSync(recursive: true);
         m.writeAsStringSync(flagFileContent, flush: true);
@@ -250,7 +250,7 @@ class DiagPolicy {
     }
   }
 
-  /// 启动时把本地状态读回来（在写 `Library/lfexp-diag-on.txt` 之前调用）。
+  /// 启动时把本地状态读回来（在写 `Library/tarn-diag-on.txt` 之前调用）。
   ///
   /// 读回来的是「上次面板告诉我们的值 + 上次的租约」，**不算续期**（续期只在真拿到面板答复时发生）。
   /// 租约已经过期的话：当作关（并把这些陈旧 key 清掉）—— 用户下次更新订阅时面板会重新决定，

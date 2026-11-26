@@ -74,7 +74,7 @@ class MitmModuleSkip {
 }
 
 /// What a Surge module, a Loon plugin, a Quantumult X snippet or a Stash
-/// override adds, in the syntax of FlClash's own lists; the Core still judges
+/// override adds, in the syntax of Tarn's own lists; the Core still judges
 /// each line.
 class MitmModuleContent {
   MitmModuleContent({
@@ -126,7 +126,7 @@ class MitmModuleContent {
   final List<String> skipVerifyHostname;
   final List<String> script;
 
-  /// The scripts it declares that FlClash runs, whatever its arguments leave
+  /// The scripts it declares that Tarn runs, whatever its arguments leave
   /// on.
   final List<String> declaredScriptLines;
   int get declaredScripts => declaredScriptLines.length;
@@ -432,7 +432,7 @@ const _stashScriptTypes = {
   'response': 'http-response',
 };
 
-/// What a Stash override says about itself, which FlClash reads no further.
+/// What a Stash override says about itself, which Tarn reads no further.
 const _stashMetaKeys = {
   'name',
   'desc',
@@ -502,7 +502,7 @@ const _runnableScriptTypes = {
   'generic',
 };
 
-/// The events FlClash reports, by Surge's names.
+/// The events Tarn reports, by Surge's names.
 const _scriptEvents = {'network-changed', 'engine-started', 'profile-reloaded'};
 
 /// Where each type keeps what a legacy line gives after the type.
@@ -569,7 +569,7 @@ final _cronField = RegExp(r'^[\d*?/,\-A-Za-z#]+$');
   return null;
 }
 
-/// The lists under `http` FlClash reads; `rewrite` is the older name of
+/// The lists under `http` Tarn reads; `rewrite` is the older name of
 /// `url-rewrite`.
 const _stashHttpLists = {
   'mitm',
@@ -648,7 +648,7 @@ const _deviceRules = {
 
 const _proxySections = {'proxy', 'proxy group', 'proxy-groups', 'proxies'};
 
-/// Sections for features of the app the module was written for that FlClash
+/// Sections for features of the app the module was written for that Tarn
 /// has nothing like.
 final _appOnlySection = RegExp(
   r'^(panel|ponte|dhcp|ssid setting|mtproto|snell server|replica|tiles|'
@@ -1554,7 +1554,7 @@ class _ModuleParser {
   }
 
   /// The resources directory's file for [url], or null once the line is
-  /// skipped for a file the module does not download or FlClash has not.
+  /// skipped for a file the module does not download or Tarn has not.
   String? _resource(String section, String line, String url) {
     if (url.startsWith(_inlineResource)) {
       final file = resources[url];

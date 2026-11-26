@@ -10,7 +10,7 @@ import 'common.dart';
 /// 面板的加密密钥是 `HMAC-SHA256(站点密钥, 用户 uuid)`：
 ///   - 站点密钥是站点级常量（`v2board.subscribe_encrypt_key`）；
 ///   - 用户 uuid 在**明文订阅**的节点凭据里（v2board 用 uuid 生成 ss/vmess/
-///     vless/lfexp 的凭据），所以客户端可以先拉一次明文拿到 uuid，再派生密钥
+///     vless/Tarn 的凭据），所以客户端可以先拉一次明文拿到 uuid，再派生密钥
 ///     去解加密订阅，全程不需要用户输入。
 ///
 /// 站点密钥按域名后缀匹配。公共构建可以留空（此时不会主动要求加密订阅，
@@ -82,7 +82,7 @@ class SubscribeSite {
   /// 从明文订阅里取用户 uuid。
   ///
   /// v2board 的节点凭据就是用户 uuid：ss 的 `password`、vmess/vless 的
-  /// `uuid`、lfexp 的 `uuid` 都是同一个 32 位 hex（老库是带连字符的 36 位）。
+  /// `uuid`、Tarn 的 `uuid` 都是同一个 32 位 hex（老库是带连字符的 36 位）。
   static String? extractUuid(String plain) {
     final match = RegExp(
       r"(?:^|[\s,{])(?:uuid|password):\s*'?([0-9a-fA-F]{8}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{4}-?[0-9a-fA-F]{12})'?",
