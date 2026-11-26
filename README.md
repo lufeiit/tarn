@@ -8,17 +8,25 @@ have, and the app routes traffic with it on your device.
 - No account, no analytics, no ads
 - Rule-based routing with your own groups and rules
 
-## Source and license
+## What this repository contains
 
-This repository is the client application and its iOS platform layer, released
-under the GNU General Public License v3.0. See [LICENSE](LICENSE).
+- `lib/` — the Flutter client (GPL-3.0, derived from FlClash)
+- `ios/` — the iOS platform layer: app shell, Packet Tunnel provider, widget
+- `vpn_bridge/` — the Flutter plugin that talks to the tunnel provider
+- `plugins/` — in-repo plugin packages used by the client
+
+## iOS kernel
+
+The iOS kernel is maintained in a separate repository and is not part of this
+one. Building the app requires a kernel archive at
+`libclash/ios/FlClashCore.xcframework/ios-arm64/libclash.a`; the build script
+`ios/toolchain/build_kernel.sh` documents the expected inputs and tags.
 
 ## Building
 
     git submodule update --init --recursive
     flutter pub get
     flutter gen-l10n
-    bash ios/toolchain/build_kernel.sh
     flutter build ios --release --no-codesign
 
 ## Third-party components
